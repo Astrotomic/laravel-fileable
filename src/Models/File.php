@@ -5,6 +5,7 @@ namespace Astrotomic\Fileable\Models;
 use Astrotomic\Fileable\Concerns\Fileable;
 use Astrotomic\Fileable\Contracts\Fileable as FileableContract;
 use Astrotomic\LaravelEloquentUuid\Eloquent\Concerns\UsesUUID;
+use Closure;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\Builder;
@@ -74,6 +75,11 @@ class File extends Model implements Responsable
     protected $casts = [
         'size' => 'int',
         'meta' => 'json',
+    ];
+
+    protected $observables = [
+        'storing',
+        'stored',
     ];
 
     public static function booted(): void
@@ -193,5 +199,15 @@ class File extends Model implements Responsable
         }
 
         return $stored;
+    }
+
+    public static function storing(Closure $callback): void
+    {
+        static::registerModelEvent('storing', $callback);
+    }
+
+    public static function stored(Closure $callback): void
+    {
+        static::registerModelEvent('stored', $callback);
     }
 }

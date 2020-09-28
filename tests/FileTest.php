@@ -7,6 +7,7 @@ use Astrotomic\Fileable\Tests\Models\Post;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -140,5 +141,45 @@ final class FileTest extends TestCase
         $this->assertCount(2, $files);
         $this->assertTrue($files->first()->is($file1));
         $this->assertTrue($files->last()->is($file2));
+    }
+
+    /** @test */
+    public function it_can_listen_for_storing_event(): void
+    {
+        Storage::fake('local');
+
+        File::storing(fn(File $file) => $this->assertFalse($file->storage()->exists($file->filepath)));
+
+        /** @var Post $post */
+        $post = Post::create();
+        $post->addFile(self::tempFilepath(__DIR__.'/files/henry-bauer-S8DTIjQ8nPk-unsplash.jpg'))->save();
+    }
+
+    /** @test */
+    public function it_can_listen_for_stored_event(): void
+    {
+        Storage::fake('local');
+
+        File::stored(fn(File $file) => $this->assertTrue($file->storage()->exists($file->filepath)));
+
+        /** @var Post $post */
+        $post = Post::create();
+        $post->addFile(self::tempFilepath(__DIR__.'/files/henry-bauer-S8DTIjQ8nPk-unsplash.jpg'))->save();
+    }
+
+    /** @test */
+    public function it_can_prevent_store_in_storing_listener(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        Storage::fake('local');
+
+        File::storing(fn() => false);
+
+        /** @var Post $post */
+        $post = Post::create();
+        $post->addFile(self::tempFilepath(__DIR__.'/files/henry-bauer-S8DTIjQ8nPk-unsplash.jpg'))->save();
+
+        $this->assertSame(0, File::count());
     }
 }
