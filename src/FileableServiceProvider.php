@@ -2,6 +2,7 @@
 
 namespace Astrotomic\Fileable;
 
+use CreateFilesTable;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 
@@ -29,16 +30,18 @@ class FileableServiceProvider extends ServiceProvider
 
     protected function bootMigrations(): void
     {
-        foreach (['CreateFilesTable'] as $i => $migration) {
-            if (! class_exists($migration)) {
-                $this->publishes([
-                    __DIR__.'/../migrations/'.Str::snake($migration).'.php.stub' => database_path(sprintf(
-                        'migrations/%s_%s.php',
-                        date('Y_m_d_His', time() + $i),
-                        Str::snake($migration)
-                    )),
-                ], 'migrations');
+        foreach ([CreateFilesTable::class] as $i => $migration) {
+            if (class_exists($migration)) {
+                continue;
             }
+
+            $this->publishes([
+                __DIR__.'/../migrations/0000_00_00_000000_'.Str::snake($migration).'.php' => database_path(sprintf(
+                    'migrations/%s_%s.php',
+                    date('Y_m_d_His', time() + $i),
+                    Str::snake($migration)
+                )),
+            ], 'migrations');
         }
     }
 }
