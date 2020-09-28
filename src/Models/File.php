@@ -5,6 +5,7 @@ namespace Astrotomic\Fileable\Models;
 use Astrotomic\Fileable\Concerns\Fileable;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Carbon;
@@ -31,6 +32,24 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  * @property Carbon|null $updated_at
  * @property Carbon|null $modified_at
  * @property-read Model|Fileable $fileable
+ *
+ * @method static Builder|File newModelQuery()
+ * @method static Builder|File newQuery()
+ * @method static Builder|File query()
+ * @method static Builder|File whereCreatedAt($value)
+ * @method static Builder|File whereDisk($value)
+ * @method static Builder|File whereFileableId($value)
+ * @method static Builder|File whereFileableType($value)
+ * @method static Builder|File whereFilename($value)
+ * @method static Builder|File whereFilepath($value)
+ * @method static Builder|File whereId($value)
+ * @method static Builder|File whereMeta($value)
+ * @method static Builder|File whereMimetype($value)
+ * @method static Builder|File whereName($value)
+ * @method static Builder|File whereSize($value)
+ * @method static Builder|File whereUpdatedAt($value)
+ *
+ * @mixin Builder
  */
 class File extends Model implements Responsable
 {
