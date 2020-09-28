@@ -3,19 +3,24 @@
 namespace Astrotomic\Fileable\Models;
 
 use Astrotomic\Fileable\Concerns\Fileable;
+use Astrotomic\Fileable\Contracts\Fileable as FileableContract;
+use Astrotomic\LaravelEloquentUuid\Eloquent\Concerns\UsesUUID;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * @property int $id
+ * @property string $uuid
  * @property string $fileable_type
  * @property int $fileable_id
  * @property string|null $disk
@@ -36,24 +41,29 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  * @method static Builder|File newModelQuery()
  * @method static Builder|File newQuery()
  * @method static Builder|File query()
- * @method static Builder|File whereCreatedAt($value)
- * @method static Builder|File whereDisk($value)
- * @method static Builder|File whereFileableId($value)
- * @method static Builder|File whereFileableType($value)
- * @method static Builder|File whereFilename($value)
- * @method static Builder|File whereFilepath($value)
- * @method static Builder|File whereId($value)
- * @method static Builder|File whereMeta($value)
- * @method static Builder|File whereMimetype($value)
- * @method static Builder|File whereName($value)
- * @method static Builder|File whereSize($value)
- * @method static Builder|File whereUpdatedAt($value)
+ * @method static Builder|MorphMany|File whereCreatedAt($value)
+ * @method static Builder|MorphMany|File whereDisk($value)
+ * @method static Builder|MorphMany|File whereFileable(FileableContract $fileable)
+ * @method static Builder|MorphMany|File whereFileableId($value)
+ * @method static Builder|MorphMany|File whereFileableType($value)
+ * @method static Builder|MorphMany|File whereFilename($value)
+ * @method static Builder|MorphMany|File whereFilepath($value)
+ * @method static Builder|MorphMany|File whereId($value)
+ * @method static Builder|MorphMany|File whereMeta($value)
+ * @method static Builder|MorphMany|File whereMimetype($value)
+ * @method static Builder|MorphMany|File whereName($value)
+ * @method static Builder|MorphMany|File whereSize($value)
+ * @method static Builder|MorphMany|File whereUpdatedAt($value)
+ * @method static Builder|MorphMany|File whereUuid(string|string[]|UuidInterface|UuidInterface[] $uuid)
  *
  * @mixin Builder
  */
 class File extends Model implements Responsable
 {
+    use UsesUUID;
+
     protected $fillable = [
+        'uuid',
         'name',
         'disk',
         'filepath',
@@ -82,6 +92,21 @@ class File extends Model implements Responsable
     public function fileable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    /**
+     * @param Builder $query
+     * @param FileableContract|Model $fileable
+     *
+     * @return Builder
+     */
+    public function scopeWhereFileable(Builder $query, FileableContract $fileable): Builder
+    {
+        return $query->where(
+            fn(Builder $q) => $q
+                ->where('fileable_type', $fileable->getMorphClass())
+                ->where('fileable_id', $fileable->getKey())
+        );
     }
 
     public function exists(): bool

@@ -11,6 +11,7 @@ class CreateFilesTable extends Migration
         Schema::create('files', static function (Blueprint $table): void {
             $table->id();
             $table->morphs('fileable');
+            $table->uuid('uuid')->unique();
             $table->string('name')->nullable();
             $table->string('disk');
             $table->string('filepath');

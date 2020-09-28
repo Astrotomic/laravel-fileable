@@ -70,7 +70,7 @@ final class FileTest extends TestCase
         $post = Post::create();
         $file = $post->addFile(self::tempFilepath(__DIR__.'/files/henry-bauer-S8DTIjQ8nPk-unsplash.jpg'))->save();
 
-        $this->assertSame('http://localhost/storage/henry-bauer-S8DTIjQ8nPk-unsplash.jpg', $file->url);
+        $this->assertSame(sprintf('http://localhost/storage/%s.jpg', $file->uuid), $file->url);
     }
 
     /** @test */
@@ -134,5 +134,23 @@ final class FileTest extends TestCase
         ]);
         $response = $file->toResponse($request);
         $this->assertInstanceOf(JsonResponse::class, $response);
+    }
+
+    /** @test */
+    public function it_can_query_files_by_fileable(): void
+    {
+        Storage::fake('local');
+
+        /** @var Post $post */
+        $post = Post::create();
+        $file1 = $post->addFile(self::tempFilepath(__DIR__.'/files/henry-bauer-S8DTIjQ8nPk-unsplash.jpg'))->save();
+        $file2 = $post->addFile(self::tempFilepath(__DIR__.'/files/henry-bauer-S8DTIjQ8nPk-unsplash.jpg'))->save();
+        Post::create()->addFile(self::tempFilepath(__DIR__.'/files/henry-bauer-S8DTIjQ8nPk-unsplash.jpg'))->save();
+
+        $files = File::whereFileable($post)->get();
+
+        $this->assertCount(2, $files);
+        $this->assertTrue($files->first()->is($file1));
+        $this->assertTrue($files->last()->is($file2));
     }
 }
