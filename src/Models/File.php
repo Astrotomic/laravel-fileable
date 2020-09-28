@@ -2,7 +2,6 @@
 
 namespace Astrotomic\Fileable\Models;
 
-
 use Astrotomic\Fileable\Concerns\Fileable;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Contracts\Support\Responsable;
@@ -151,13 +150,13 @@ class File extends Model implements Responsable
      */
     public function store($contents, array $options = []): bool
     {
-        if($this->fireModelEvent('storing') === false) {
+        if ($this->fireModelEvent('storing') === false) {
             return false;
         }
 
         $stored = $this->storage()->put($this->filepath, $contents, $options);
 
-        if($stored) {
+        if ($stored) {
             $this->fireModelEvent('stored', false);
         }
 

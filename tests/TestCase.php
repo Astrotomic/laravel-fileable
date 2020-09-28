@@ -9,12 +9,7 @@ use DirectoryIterator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File as FileHelper;
 use Illuminate\Support\Str;
-use InvalidArgumentException;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
-use Ramsey\Uuid\Uuid;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use SplFileInfo;
 
 abstract class TestCase extends OrchestraTestCase
 {
@@ -25,15 +20,19 @@ abstract class TestCase extends OrchestraTestCase
         parent::setUp();
 
         $this->loadMigrationsFrom(__DIR__.'/../migrations');
-        $this->loadMigrationsFrom(__DIR__ . '/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/migrations');
     }
 
     protected function tearDown(): void
     {
         /** @var DirectoryIterator $item */
-        foreach(new DirectoryIterator(__DIR__.'/tmp') as $item) {
-            if($item->isDot()) continue;
-            if($item->getFilename() === '.gitignore') continue;
+        foreach (new DirectoryIterator(__DIR__.'/tmp') as $item) {
+            if ($item->isDot()) {
+                continue;
+            }
+            if ($item->getFilename() === '.gitignore') {
+                continue;
+            }
 
             $item->isDir()
                 ? FileHelper::deleteDirectory($item->getPathname())
@@ -74,17 +73,17 @@ abstract class TestCase extends OrchestraTestCase
         static::assertSame($filepath, $file->filepath);
         static::assertSame($filename, $file->filename);
         static::assertSame($filename, $file->filename);
-        static::assertSame($basename , $file->basename);
+        static::assertSame($basename, $file->basename);
         static::assertSame($name, $file->name);
 
-        if($size === null) {
+        if ($size === null) {
             static::assertIsInt($file->size);
             static::assertGreaterThan(0, $file->size);
         } else {
             static::assertSame($size, $file->size);
         }
 
-        if($mimetype === null) {
+        if ($mimetype === null) {
             static::assertIsString($file->mimetype);
         } else {
             static::assertSame($mimetype, $file->mimetype);
@@ -96,6 +95,7 @@ abstract class TestCase extends OrchestraTestCase
         $target = __DIR__.'/tmp/'.Str::random(8).'/'.pathinfo($filepath, PATHINFO_BASENAME);
         @mkdir(dirname($target), 0755, true);
         copy($filepath, $target);
+
         return $target;
     }
 }

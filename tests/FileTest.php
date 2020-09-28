@@ -130,7 +130,7 @@ final class FileTest extends TestCase
 
         $request = Request::capture();
         $request->headers->add([
-            'Accept' => 'application/json'
+            'Accept' => 'application/json',
         ]);
         $response = $file->toResponse($request);
         $this->assertInstanceOf(JsonResponse::class, $response);

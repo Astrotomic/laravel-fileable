@@ -4,7 +4,6 @@ namespace Astrotomic\Fileable\Tests;
 
 use Astrotomic\Fileable\Models\File;
 use Astrotomic\Fileable\Tests\Models\Post;
-use Illuminate\Mail\PendingMail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
@@ -298,7 +297,7 @@ final class FileAdderTest extends TestCase
 
         $original = self::tempFilepath(__DIR__.'/files/henry-bauer-S8DTIjQ8nPk-unsplash.jpg');
 
-        $file = $post->addFile($original)->tap(fn(File $file) => $file->disk = 's3')();
+        $file = $post->addFile($original)->tap(fn (File $file) => $file->disk = 's3')();
 
         $this->assertFile(
             $file,

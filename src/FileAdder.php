@@ -141,7 +141,7 @@ class FileAdder
         throw_unless($this->file->store($handle), new RuntimeException());
         fclose($handle);
 
-        if(! $this->preserveOriginal) {
+        if (! $this->preserveOriginal) {
             throw_unless($this->deleteOriginal(), new RuntimeException());
         }
 
@@ -157,7 +157,7 @@ class FileAdder
 
     protected function deleteOriginal(): bool
     {
-        if(is_string($this->originalFile)) {
+        if (is_string($this->originalFile)) {
             return unlink($this->originalFile);
         }
 
