@@ -103,7 +103,7 @@ class File extends Model implements Responsable
     public function scopeWhereFileable(Builder $query, FileableContract $fileable): Builder
     {
         return $query->where(
-            fn(Builder $q) => $q
+            fn (Builder $q) => $q
                 ->where('fileable_type', $fileable->getMorphClass())
                 ->where('fileable_id', $fileable->getKey())
         );

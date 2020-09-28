@@ -4,7 +4,6 @@ namespace Astrotomic\Fileable;
 
 use Astrotomic\Fileable\Contracts\Fileable as FileableContract;
 use Astrotomic\Fileable\Models\File;
-use Astrotomic\LaravelEloquentUuid\Eloquent\Concerns\UsesUUID;
 use Closure;
 use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -169,9 +168,9 @@ class FileAdder
     {
         if (is_string($this->originalFile)) {
             return $this->fillFileFromPath($this->originalFile);
-        }elseif ($this->originalFile instanceof UploadedFile) {
+        } elseif ($this->originalFile instanceof UploadedFile) {
             return $this->fillFileFromUploadedFile($this->originalFile);
-        }elseif ($this->originalFile instanceof SymfonyFile) {
+        } elseif ($this->originalFile instanceof SymfonyFile) {
             return $this->fillFileFromSymfonyFile($this->originalFile);
         }
 
