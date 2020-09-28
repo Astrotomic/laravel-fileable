@@ -57,14 +57,12 @@ abstract class TestCase extends OrchestraTestCase
         ?string $disk,
         string $filepath,
         ?string $filename = null,
-        ?string $basename = null,
         ?string $name = null,
         ?int $size = null,
         ?string $mimetype = null
     ): void {
         $filename ??= pathinfo($filepath, PATHINFO_BASENAME);
-        $basename ??= pathinfo($filename, PATHINFO_FILENAME);
-        $name ??= Str::slug($basename);
+        $name ??= Str::slug(pathinfo($filename, PATHINFO_FILENAME));
 
         static::assertTrue($file->exists());
         static::assertTrue($file->fileable->is($fileable));
@@ -73,7 +71,6 @@ abstract class TestCase extends OrchestraTestCase
         static::assertSame($filepath, $file->filepath);
         static::assertSame($filename, $file->filename);
         static::assertSame($filename, $file->filename);
-        static::assertSame($basename, $file->basename);
         static::assertSame($name, $file->name);
 
         if ($size === null) {

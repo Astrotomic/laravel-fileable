@@ -33,7 +33,6 @@ final class FileAdderTest extends TestCase
             sprintf('%s.jpg', $file->uuid),
             'henry-bauer-S8DTIjQ8nPk-unsplash.jpg',
             null,
-            null,
             $size,
             'image/jpeg'
         );
@@ -60,7 +59,6 @@ final class FileAdderTest extends TestCase
             'local',
             sprintf('%s.jpg', $file->uuid),
             'henry-bauer-S8DTIjQ8nPk-unsplash.jpg',
-            null,
             null,
             $size,
             'image/jpeg'
@@ -90,7 +88,6 @@ final class FileAdderTest extends TestCase
             'local',
             sprintf('%s.jpg', $file->uuid),
             'henry-bauer-S8DTIjQ8nPk-unsplash.jpg',
-            null,
             null,
             $size,
             'image/jpeg'
@@ -210,7 +207,6 @@ final class FileAdderTest extends TestCase
             'local',
             sprintf('%s.jpg', $file->uuid),
             'henry-bauer-S8DTIjQ8nPk-unsplash.jpg',
-            null,
             'Henry Bauer - Freibergsee, Oberstdorf, Germany'
         );
     }
@@ -279,7 +275,6 @@ final class FileAdderTest extends TestCase
             's3',
             sprintf('%s/%s.jpg', $dir, $file->uuid),
             'henry-bauer-S8DTIjQ8nPk.jpg',
-            null,
             'Henry Bauer - Freibergsee, Oberstdorf, Germany',
             $size,
             'image/jpeg'

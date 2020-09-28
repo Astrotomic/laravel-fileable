@@ -29,13 +29,11 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  * @property string|null $name
  * @property string|null $filepath
  * @property string|null $filename
- * @property string|null $url
- * @property string|null $extension
- * @property string|null $basename
  * @property array|null $meta
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property Carbon|null $modified_at
+ * @property-read string|null $url
+ * @property-read Carbon|null $modified_at
  * @property-read Model|Fileable $fileable
  *
  * @method static Builder|File newModelQuery()
@@ -121,22 +119,12 @@ class File extends Model implements Responsable
 
     public function getNameAttribute(?string $value): string
     {
-        return $value ?? Str::slug($this->basename);
+        return $value ?? Str::slug(pathinfo($this->filename, PATHINFO_FILENAME));
     }
 
     public function getUrlAttribute(): ?string
     {
         return url($this->storage()->url($this->filepath));
-    }
-
-    public function getExtensionAttribute(): ?string
-    {
-        return pathinfo($this->filename, PATHINFO_EXTENSION);
-    }
-
-    public function getBasenameAttribute(): ?string
-    {
-        return pathinfo($this->filename, PATHINFO_FILENAME);
     }
 
     public function getModifiedAtAttribute(): ?Carbon

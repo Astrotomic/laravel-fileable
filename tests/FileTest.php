@@ -50,18 +50,6 @@ final class FileTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_extension_of_file(): void
-    {
-        Storage::fake('local');
-
-        /** @var Post $post */
-        $post = Post::create();
-        $file = $post->addFile(self::tempFilepath(__DIR__.'/files/henry-bauer-S8DTIjQ8nPk-unsplash.jpg'))->save();
-
-        $this->assertSame('jpg', $file->extension);
-    }
-
-    /** @test */
     public function it_can_get_url_of_file(): void
     {
         Storage::fake('local');
