@@ -33,6 +33,9 @@ trait Fileable
         });
     }
 
+    /**
+     * @return MorphMany|File
+     */
     public function files(): MorphMany
     {
         return $this->morphMany(File::class, 'fileable');
