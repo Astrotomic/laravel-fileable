@@ -122,14 +122,14 @@ class FileAdder
             call_user_func($this->tap, $this->file, $this->fileable, $this->originalFile);
         }
 
+        $this->storeFile();
+
         throw_unless(
             $this->fileable->exists,
             (new ModelNotFoundException())->setModel(get_class($this->fileable))
         );
 
         $this->fileable->files()->save($this->file);
-
-        $this->storeFile();
 
         return $this->file;
     }
