@@ -30,7 +30,7 @@ class FileAdder
     public function __construct(FilesystemFactory $filesystem)
     {
         $this->filesystem = $filesystem;
-        $this->file = new File();
+        $this->file = app(config('fileable.model', File::class));
     }
 
     public function to(FileableContract $fileable): self

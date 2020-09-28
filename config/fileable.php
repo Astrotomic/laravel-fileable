@@ -8,4 +8,10 @@ return [
      */
     'disk' => env('FILEABLE_DISK', 'local'),
 
+
+    /*
+     * The file eloquent models FQCN.
+     * If you want to use your own model you can define it here.
+     */
+    'model' => \Astrotomic\Fileable\Models\File::class,
 ];
