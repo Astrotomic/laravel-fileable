@@ -1,0 +1,64 @@
+{
+    "name": "astrotomic/laravel-fileable",
+    "type": "library",
+    "description": "",
+    "keywords": [
+        "astrotomic",
+        "laravel-fileable",
+        "laravel",
+        "eloquent",
+        "fileable",
+        "file",
+        "storage"
+    ],
+    "homepage": "https://astrotomic.info",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tom Witkowski",
+            "email": "gummibeer@astrotomic.info",
+            "homepage": "https://gummibeer.de",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4",
+        "illuminate/database": "^7.0 || ^8.0",
+        "illuminate/contracts": "^7.0 || ^8.0",
+        "illuminate/http": "^7.0 || ^8.0",
+        "illuminate/support": "^7.0 || ^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": " ^5.0 || ^6.0",
+        "phpunit/phpunit": "^9.3"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Astrotomic\\Fileable\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Astrotomic\\Fileable\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Astrotomic\\Fileable\\FileableServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html=.coverage"
+    },
+    "support": {
+        "email": "dev@astrotomic.info",
+        "issues": "https://github.com/Astrotomic/laravel-fileable/issues",
+        "source": "https://github.com/Astrotomic/laravel-fileable"
+    }
+}
