@@ -6,6 +6,7 @@ use Astrotomic\Fileable\Contracts\Fileable as FileableContract;
 use Astrotomic\Fileable\Models\File;
 use Closure;
 use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -144,6 +145,11 @@ class FileAdder
         if (! $this->preserveOriginal) {
             throw_unless($this->deleteOriginal(), new RuntimeException());
         }
+
+        throw_unless(
+            $this->fileable,
+            (new ModelNotFoundException())->setModel(get_class($this->fileable))
+        );
 
         $this->fileable->files()->save($this->file);
 
