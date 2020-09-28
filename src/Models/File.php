@@ -61,16 +61,7 @@ class File extends Model implements Responsable
 {
     use UsesUUID;
 
-    protected $fillable = [
-        'uuid',
-        'name',
-        'disk',
-        'filepath',
-        'filename',
-        'mimetype',
-        'size',
-        'meta',
-    ];
+    protected $guarded = [];
 
     protected $casts = [
         'size' => 'int',
