@@ -244,7 +244,7 @@ final class FileAdderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_add_a_file_to_model_fully_customized(): void
+    public function it_can_add_a_file_to_model_with_all_options(): void
     {
         Storage::fake('s3');
 
