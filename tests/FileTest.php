@@ -148,7 +148,7 @@ final class FileTest extends TestCase
     {
         Storage::fake('local');
 
-        File::storing(fn(File $file) => $this->assertFalse($file->storage()->exists($file->filepath)));
+        File::storing(fn (File $file) => $this->assertFalse($file->storage()->exists($file->filepath)));
 
         /** @var Post $post */
         $post = Post::create();
@@ -160,7 +160,7 @@ final class FileTest extends TestCase
     {
         Storage::fake('local');
 
-        File::stored(fn(File $file) => $this->assertTrue($file->storage()->exists($file->filepath)));
+        File::stored(fn (File $file) => $this->assertTrue($file->storage()->exists($file->filepath)));
 
         /** @var Post $post */
         $post = Post::create();
@@ -174,7 +174,7 @@ final class FileTest extends TestCase
 
         Storage::fake('local');
 
-        File::storing(fn() => false);
+        File::storing(fn () => false);
 
         /** @var Post $post */
         $post = Post::create();
