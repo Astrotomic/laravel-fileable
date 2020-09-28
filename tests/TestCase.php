@@ -71,7 +71,7 @@ abstract class TestCase extends OrchestraTestCase
         static::assertSame($filepath, $file->filepath);
         static::assertSame($filename, $file->filename);
         static::assertSame($filename, $file->filename);
-        static::assertSame($name, $file->name);
+        static::assertSame($name, $file->display_name);
 
         if ($size === null) {
             static::assertIsInt($file->size);

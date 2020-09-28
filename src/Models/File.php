@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  * @property string|null $disk
  * @property string|null $mimetype
  * @property int|null $size
- * @property string|null $name
+ * @property string|null $display_name
  * @property string|null $filepath
  * @property string|null $filename
  * @property array|null $meta
@@ -50,7 +50,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  * @method static Builder|MorphMany|File whereId($value)
  * @method static Builder|MorphMany|File whereMeta($value)
  * @method static Builder|MorphMany|File whereMimetype($value)
- * @method static Builder|MorphMany|File whereName($value)
+ * @method static Builder|MorphMany|File whereDisplayName($value)
  * @method static Builder|MorphMany|File whereSize($value)
  * @method static Builder|MorphMany|File whereUpdatedAt($value)
  * @method static Builder|MorphMany|File whereUuid(string|string[]|UuidInterface|UuidInterface[] $uuid)
@@ -114,7 +114,7 @@ class File extends Model implements Responsable
         return Storage::disk($this->disk);
     }
 
-    public function getNameAttribute(?string $value): string
+    public function getDisplayNameAttribute(?string $value): string
     {
         return $value ?? Str::slug(pathinfo($this->filename, PATHINFO_FILENAME));
     }

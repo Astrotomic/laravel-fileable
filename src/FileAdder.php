@@ -79,7 +79,7 @@ class FileAdder
 
     public function name(string $name): self
     {
-        $this->file->name = $name;
+        $this->file->display_name = $name;
 
         return $this;
     }

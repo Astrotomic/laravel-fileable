@@ -12,7 +12,7 @@ class CreateFilesTable extends Migration
             $table->id();
             $table->morphs('fileable');
             $table->uuid('uuid')->unique();
-            $table->string('name')->nullable();
+            $table->string('display_name')->nullable();
             $table->string('disk');
             $table->string('filepath');
             $table->string('filename');
