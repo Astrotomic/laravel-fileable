@@ -197,7 +197,7 @@ final class FileAdderTest extends TestCase
 
         $original = self::tempFilepath(__DIR__.'/files/henry-bauer-S8DTIjQ8nPk-unsplash.jpg');
 
-        $file = $post->addFile($original)->name('Henry Bauer - Freibergsee, Oberstdorf, Germany')->save();
+        $file = $post->addFile($original)->named('Henry Bauer - Freibergsee, Oberstdorf, Germany')->save();
 
         $this->assertFile(
             $file,
@@ -260,7 +260,7 @@ final class FileAdderTest extends TestCase
             ->on('s3')
             ->in($dir)
             ->as('henry-bauer-S8DTIjQ8nPk.jpg')
-            ->name('Henry Bauer - Freibergsee, Oberstdorf, Germany')
+            ->named('Henry Bauer - Freibergsee, Oberstdorf, Germany')
             ->with([
                 'foo' => 'bar',
                 'lorem' => 'ipsum',

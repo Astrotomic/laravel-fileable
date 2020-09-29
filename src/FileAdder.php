@@ -77,7 +77,7 @@ class FileAdder
         return $this;
     }
 
-    public function name(string $name): self
+    public function named(string $name): self
     {
         $this->file->display_name = $name;
 
