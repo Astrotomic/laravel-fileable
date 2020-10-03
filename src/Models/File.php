@@ -162,6 +162,11 @@ class File extends Model implements Responsable
         ]);
     }
 
+    /**
+     * @return resource|null
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
     public function stream()
     {
         return $this->storage()->readStream($this->filepath);
