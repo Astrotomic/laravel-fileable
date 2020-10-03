@@ -138,7 +138,7 @@ class File extends Model implements Responsable
     public function toResponse($request): Response
     {
         if ($request->expectsJson()) {
-            return response()->json($this->toJson());
+            return response()->json($this);
         }
 
         return $this->download();
