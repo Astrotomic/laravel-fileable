@@ -180,6 +180,7 @@ class File extends Model implements Responsable
     /**
      * @param string|resource $contents
      * @param array $options
+     *
      * @return bool
      */
     public function store($contents, array $options = []): bool
