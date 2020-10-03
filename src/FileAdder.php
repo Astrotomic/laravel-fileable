@@ -2,6 +2,7 @@
 
 namespace Astrotomic\Fileable;
 
+use Astrotomic\Fileable\Contracts\File as FileContract;
 use Astrotomic\Fileable\Contracts\Fileable as FileableContract;
 use Astrotomic\Fileable\Models\File;
 use Closure;
@@ -17,7 +18,8 @@ class FileAdder
 {
     protected FilesystemFactory $filesystem;
 
-    protected File $file;
+    /** @var FileContract|Model  */
+    protected FileContract $file;
 
     /** @var FileableContract|Model */
     protected FileableContract $fileable;
@@ -105,7 +107,7 @@ class FileAdder
         return $this;
     }
 
-    public function save(): File
+    public function save(): FileContract
     {
         $this->fillFile();
 
@@ -134,7 +136,7 @@ class FileAdder
         return $this->file;
     }
 
-    public function __invoke(): File
+    public function __invoke(): FileContract
     {
         return $this->save();
     }
@@ -164,7 +166,7 @@ class FileAdder
         return unlink($this->originalFile->getPathname());
     }
 
-    protected function fillFile(): File
+    protected function fillFile(): FileContract
     {
         if (is_string($this->originalFile)) {
             return $this->fillFileFromPath($this->originalFile);
@@ -177,7 +179,7 @@ class FileAdder
         throw new OutOfBoundsException('Unsupported original file passed to FileAdder.');
     }
 
-    protected function fillFileFromPath(string $path): File
+    protected function fillFileFromPath(string $path): FileContract
     {
         throw_unless(file_exists($path), new RuntimeException());
         throw_unless(is_readable($path), new RuntimeException());
@@ -189,7 +191,7 @@ class FileAdder
         return $this->file;
     }
 
-    protected function fillFileFromUploadedFile(UploadedFile $file): File
+    protected function fillFileFromUploadedFile(UploadedFile $file): FileContract
     {
         $this->file->filename ??= $file->getClientOriginalName();
         $this->file->size = $file->getSize();
@@ -198,7 +200,7 @@ class FileAdder
         return $this->file;
     }
 
-    protected function fillFileFromSymfonyFile(SymfonyFile $file): File
+    protected function fillFileFromSymfonyFile(SymfonyFile $file): FileContract
     {
         $this->file->filename ??= $file->getFilename();
         $this->file->size = $file->getSize();

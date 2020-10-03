@@ -3,6 +3,7 @@
 namespace Astrotomic\Fileable\Models;
 
 use Astrotomic\Fileable\Concerns\Fileable;
+use Astrotomic\Fileable\Contracts\File as FileContract;
 use Astrotomic\Fileable\Contracts\Fileable as FileableContract;
 use Astrotomic\LaravelEloquentUuid\Eloquent\Concerns\UsesUUID;
 use Closure;
@@ -57,7 +58,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  *
  * @mixin Builder
  */
-class File extends Model implements Responsable
+class File extends Model implements Responsable, FileContract
 {
     use UsesUUID;
 
