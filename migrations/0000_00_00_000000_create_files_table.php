@@ -8,7 +8,7 @@ class CreateFilesTable extends Migration
 {
     public function up(): void
     {
-        Schema::create('files', static function (Blueprint $table): void {
+        Schema::connection(config('fileable.database_connection'))->create(config('fileable.table_name'), static function (Blueprint $table): void {
             $table->id();
             $table->morphs('fileable');
             $table->uuid('uuid')->unique();
@@ -27,6 +27,6 @@ class CreateFilesTable extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('files');
+        Schema::connection(config('fileable.database_connection'))->dropIfExists(config('fileable.table_name'));
     }
 }
