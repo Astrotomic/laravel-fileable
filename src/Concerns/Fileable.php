@@ -2,6 +2,7 @@
 
 namespace Astrotomic\Fileable\Concerns;
 
+use Astrotomic\Fileable\Contracts\File as FileContract;
 use Astrotomic\Fileable\FileAdder;
 use Astrotomic\Fileable\Models\File;
 use Illuminate\Database\Eloquent\Collection;
@@ -30,12 +31,12 @@ trait Fileable
                 }
             }
 
-            return $model->files()->cursor()->every(fn (File $file): bool => $file->delete());
+            return $model->files()->cursor()->every(fn (Model $file): bool => $file->delete());
         });
     }
 
     /**
-     * @return MorphMany|File
+     * @return MorphMany|File|FileContract
      */
     public function files(): MorphMany
     {
