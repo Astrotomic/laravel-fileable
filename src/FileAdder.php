@@ -11,7 +11,6 @@ use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
-use League\Flysystem\Util\MimeType;
 use OutOfBoundsException;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
@@ -22,7 +21,7 @@ class FileAdder
 {
     protected FilesystemFactory $filesystem;
 
-    /** @var FileContract|Model  */
+    /** @var FileContract|Model */
     protected FileContract $file;
 
     /** @var FileableContract|Model */

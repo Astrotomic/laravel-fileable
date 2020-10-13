@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -158,7 +157,7 @@ class File extends Model implements Responsable, FileContract
         }
 
         foreach ($request->getAcceptableContentTypes() as $acceptableContentType) {
-            if($this->isOfMimeType($acceptableContentType)) {
+            if ($this->isOfMimeType($acceptableContentType)) {
                 return $this->response();
             }
         }
