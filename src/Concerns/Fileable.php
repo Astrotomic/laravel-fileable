@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
+use OutOfBoundsException;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -42,7 +44,7 @@ trait Fileable
     }
 
     /**
-     * @param string|UploadedFile|SymfonyFile $file
+     * @param string|UploadedFile|SymfonyFile|resource $file
      * @return FileAdder
      */
     public function addFile($file): FileAdder
@@ -50,5 +52,22 @@ trait Fileable
         return app(FileAdder::class)
             ->add($file)
             ->to($this);
+    }
+
+    public function addFileFromRequest(string $key): FileAdder
+    {
+        return $this->addFile(request()->file($key));
+    }
+
+    public function addFileFromDisk(string $path, ?string $disk = null): FileAdder
+    {
+        return $this->addFile(Storage::disk($disk)->readStream($path))
+            ->as(basename($path));
+    }
+
+    public function addFileFromUrl(string $url): FileAdder
+    {
+        return $this->addFile(fopen($url, 'r'))
+            ->as(urldecode(basename(parse_url($url, PHP_URL_PATH))));
     }
 }
