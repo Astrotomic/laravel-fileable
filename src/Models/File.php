@@ -85,6 +85,19 @@ class File extends Model implements Responsable, FileContract
         });
     }
 
+    public function __construct(array $attributes = [])
+    {
+        if (! isset($this->connection)) {
+            $this->setConnection(config('fileable.database_connection'));
+        }
+
+        if (! isset($this->table)) {
+            $this->setTable(config('fileable.table_name'));
+        }
+
+        parent::__construct($attributes);
+    }
+
     public function fileable(): MorphTo
     {
         return $this->morphTo();
