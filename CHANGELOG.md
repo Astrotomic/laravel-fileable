@@ -4,7 +4,7 @@ All notable changes to `laravel-fileable` will be documented in this file
 
 ## v0.2.1 - 2020-10-13
 
-- fix `\Astrotomic\Fileable\Concerns\Fileable::deleting()` listener to only return `null` or `false`
+-   fix `\Astrotomic\Fileable\Concerns\Fileable::deleting()` listener to only return `null` or `false`
 
 ## v0.2.0 - 2020-10-13
 
