@@ -6,13 +6,17 @@ use Astrotomic\Fileable\Contracts\File as FileContract;
 use Astrotomic\Fileable\Contracts\Fileable as FileableContract;
 use Astrotomic\Fileable\Models\File;
 use Closure;
+use finfo;
 use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Str;
+use League\Flysystem\Util\MimeType;
 use OutOfBoundsException;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Mime\MimeTypes;
 
 class FileAdder
 {
@@ -24,7 +28,7 @@ class FileAdder
     /** @var FileableContract|Model */
     protected FileableContract $fileable;
 
-    /** @var string|UploadedFile|SymfonyFile */
+    /** @var string|UploadedFile|SymfonyFile|resource */
     protected $originalFile;
 
     protected ?Closure $tap = null;
@@ -36,7 +40,7 @@ class FileAdder
     public function __construct(FilesystemFactory $filesystem)
     {
         $this->filesystem = $filesystem;
-        $this->file = app(config('fileable.model', File::class));
+        $this->file = app(config('fileable.file_model', File::class));
     }
 
     public function to(FileableContract $fileable): self
@@ -61,7 +65,7 @@ class FileAdder
     }
 
     /**
-     * @param string|UploadedFile|SymfonyFile $originalFile
+     * @param string|UploadedFile|SymfonyFile|resource $originalFile
      *
      * @return $this
      */
@@ -168,7 +172,9 @@ class FileAdder
 
     protected function fillFile(): FileContract
     {
-        if (is_string($this->originalFile)) {
+        if (is_resource($this->originalFile)) {
+            return $this->fillFileFromStream($this->originalFile);
+        } elseif (is_string($this->originalFile)) {
             return $this->fillFileFromPath($this->originalFile);
         } elseif ($this->originalFile instanceof UploadedFile) {
             return $this->fillFileFromUploadedFile($this->originalFile);
@@ -205,6 +211,29 @@ class FileAdder
         $this->file->filename ??= $file->getFilename();
         $this->file->size = $file->getSize();
         $this->file->mimetype = $file->getMimeType();
+
+        return $this->file;
+    }
+
+    /**
+     * @param resource $file
+     *
+     * @return FileContract
+     */
+    protected function fillFileFromStream($file): FileContract
+    {
+        $content = stream_get_contents($file);
+        $finfo = new finfo(FILEINFO_MIME);
+
+        $this->file->size = strlen($content);
+        $this->file->mimetype = $finfo->buffer($content);
+
+        $this->file->filename ??= sprintf(
+            '%s-%s.%s',
+            date('Ymd_His'),
+            Str::random(),
+            MimeTypes::getDefault()->getExtensions($this->file->mimetype)
+        );
 
         return $this->file;
     }
