@@ -31,7 +31,7 @@ trait Fileable
                 }
             }
 
-            return $model->files()->cursor()->every(fn (Model $file): bool => $file->delete());
+            return $model->files()->cursor()->every(fn (Model $file): bool => $file->delete()) === true ? null : false;
         });
     }
 
