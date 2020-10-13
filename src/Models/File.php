@@ -13,10 +13,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -155,10 +157,16 @@ class File extends Model implements Responsable, FileContract
             return response()->json($this);
         }
 
+        foreach ($request->getAcceptableContentTypes() as $acceptableContentType) {
+            if($this->isOfMimeType($acceptableContentType)) {
+                return $this->response();
+            }
+        }
+
         return $this->download();
     }
 
-    public function download(): StreamedResponse
+    public function response(array $headers = []): StreamedResponse
     {
         return response()->stream(function (): void {
             $stream = $this->stream();
@@ -168,11 +176,22 @@ class File extends Model implements Responsable, FileContract
             if (is_resource($stream)) {
                 fclose($stream);
             }
-        }, 200, [
+        }, 200, array_merge([
             'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
             'Content-Type' => $this->mimetype,
             'Content-Length' => $this->size,
-            'Content-Disposition' => 'attachment; filename="'.$this->filename.'"',
+        ], $headers));
+    }
+
+    public function download(): StreamedResponse
+    {
+        return $this->response([
+            'Content-Disposition' => HeaderUtils::makeDisposition(
+                HeaderUtils::DISPOSITION_ATTACHMENT,
+                $this->filename,
+                /** @see \Illuminate\Routing\ResponseFactory::fallbackName() */
+                str_replace('%', '', Str::ascii($this->filename))
+            ),
         ]);
     }
 
