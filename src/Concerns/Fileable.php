@@ -38,7 +38,7 @@ trait Fileable
      */
     public function files(): MorphMany
     {
-        return $this->morphMany(File::class, 'fileable');
+        return $this->morphMany(config('fileable.file_model', File::class), 'fileable');
     }
 
     /**
