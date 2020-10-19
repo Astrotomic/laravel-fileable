@@ -153,7 +153,10 @@ class FileAdder
             'r'
         );
         throw_unless($this->file->store($handle), new RuntimeException());
-        fclose($handle);
+
+        if (is_resource($handle)) {
+            fclose($handle);
+        }
 
         if (! $this->preserveOriginal) {
             throw_unless($this->deleteOriginal(), new RuntimeException());
