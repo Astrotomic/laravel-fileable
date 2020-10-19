@@ -4,7 +4,7 @@ All notable changes to `laravel-fileable` will be documented in this file
 
 ## v0.2.2 - 2020-10-19
 
-- fix `fclose(): supplied resource is not a valid stream resource` exception
+-   fix `fclose(): supplied resource is not a valid stream resource` exception
 
 ## v0.2.1 - 2020-10-13
 
