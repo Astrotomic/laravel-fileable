@@ -4,7 +4,7 @@ All notable changes to `laravel-fileable` will be documented in this file
 
 ## v0.2.3 - 2021-03-18
 
-- add PHP 8 support
+-   add PHP 8 support
 
 ## v0.2.2 - 2020-10-19
 
