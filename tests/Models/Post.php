@@ -2,11 +2,11 @@
 
 namespace Astrotomic\Fileable\Tests\Models;
 
-use Astrotomic\Fileable\Concerns\Fileable;
-use Astrotomic\Fileable\Contracts\Fileable as FileableContract;
+use Astrotomic\Fileable\Concerns\HasFiles;
+use Astrotomic\Fileable\Contracts\Fileable;
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model implements FileableContract
+class Post extends Model implements Fileable
 {
-    use Fileable;
+    use HasFiles;
 }

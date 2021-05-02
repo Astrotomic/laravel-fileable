@@ -19,9 +19,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  *
  * @mixin Model
  */
-trait Fileable
+trait HasFiles
 {
-    public static function bootFileable(): void
+    public static function bootHasFiles(): void
     {
         static::deleting(static function (self $model): ?bool {
             if (array_key_exists(SoftDeletes::class, class_uses_recursive($model))) {
