@@ -2,9 +2,8 @@
 
 namespace Astrotomic\Fileable\Models;
 
-use Astrotomic\Fileable\Concerns\Fileable;
 use Astrotomic\Fileable\Contracts\File as FileContract;
-use Astrotomic\Fileable\Contracts\Fileable as FileableContract;
+use Astrotomic\Fileable\Contracts\Fileable;
 use Astrotomic\LaravelEloquentUuid\Eloquent\Concerns\UsesUUID;
 use Closure;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -44,7 +43,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  * @method static Builder|File query()
  * @method static Builder|MorphMany|File whereCreatedAt($value)
  * @method static Builder|MorphMany|File whereDisk($value)
- * @method static Builder|MorphMany|File whereFileable(FileableContract $fileable)
+ * @method static Builder|MorphMany|File whereFileable(Fileable $fileable)
  * @method static Builder|MorphMany|File whereFileableId($value)
  * @method static Builder|MorphMany|File whereFileableType($value)
  * @method static Builder|MorphMany|File whereFilename($value)
@@ -106,11 +105,11 @@ class File extends Model implements Responsable, FileContract
 
     /**
      * @param Builder $query
-     * @param FileableContract|Model $fileable
+     * @param Fileable|Model $fileable
      *
      * @return Builder
      */
-    public function scopeWhereFileable(Builder $query, FileableContract $fileable): Builder
+    public function scopeWhereFileable(Builder $query, Fileable $fileable): Builder
     {
         return $query->where(
             fn (Builder $q) => $q
