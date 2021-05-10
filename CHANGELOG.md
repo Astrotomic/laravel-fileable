@@ -4,7 +4,7 @@ All notable changes to `laravel-fileable` will be documented in this file
 
 ## v0.3.0 - 2021-05-10
 
-- rename `\Astrotomic\Fileable\Concerns\Fileable` to `\Astrotomic\Fileable\Concerns\HasFiles` - [#2](https://github.com/Astrotomic/laravel-fileable/pull/2)
+-   rename `\Astrotomic\Fileable\Concerns\Fileable` to `\Astrotomic\Fileable\Concerns\HasFiles` - [#2](https://github.com/Astrotomic/laravel-fileable/pull/2)
 
 ## v0.2.3 - 2021-03-18
 
